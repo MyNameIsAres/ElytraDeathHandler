@@ -24,5 +24,4 @@ public class DeathLocation {
         locationList.remove(location);
     }
 
-
 }

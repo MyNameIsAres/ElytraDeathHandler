@@ -1,6 +1,7 @@
 package org.ares.betterdeathhandler.events;
 
 import org.ares.betterdeathhandler.utility.DeathLocation;
+import org.ares.betterdeathhandler.utility.Settings;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,39 +13,41 @@ import org.mineacademy.fo.model.SimpleComponent;
 
 public class DeathTestListener  implements Listener {
 
+    /**
+     * This listener listens for a player death event.
+     * When a player dies by flying to a wall or
+     * falling to their death, while flying with
+     * an elytra.
+     *
+     * The only caveat is this event is also triggered
+     * if a player falls while simply wearing an elytra.
+     *
+     * This may be resolved in another version.
+     */
+
     DeathLocation location = DeathLocation.getInstance();
 
     @EventHandler
     public void onAnotherDeath(PlayerDeathEvent event) {
         final Player player = event.getEntity();
 
-        // TODO: Externalize validation of Elytra usage CHECK
-        // TODO: Better messages (config?)
-        // TODO: Code clean up. CHECK
-
-
         if (validDeathCause(player)) {
             if (hasElytra(player)) {
-                Common.log("Testing");
 
                 location.addLocation(player.getLocation());
 
-                SimpleComponent.of("&cOuch! Hit the ground too hard? Click me to return to your death location")
+                Common.log(location.getLocationList().toString());
+
+                SimpleComponent.of(Settings.DEATH_MESSAGE)
                         .onHover("Click to teleport to death location")
                         .onClickRunCmd("/tpadeath")
                         .send(player);
-
-            } else {
-                Common.log("Why it no worky");
             }
-        } else {
-            Common.log(String.valueOf(player.getLastDamageCause().getCause()));
         }
-
     }
 
     public boolean validDeathCause(Player player) {
-        EntityDamageEvent.DamageCause damageCause = player.getLastDamageCause().getCause();
+        final EntityDamageEvent.DamageCause damageCause = player.getLastDamageCause().getCause();
 
         return damageCause.equals(EntityDamageEvent.DamageCause.FLY_INTO_WALL)
                 || damageCause.equals(EntityDamageEvent.DamageCause.FALL);
@@ -53,5 +56,4 @@ public class DeathTestListener  implements Listener {
     public boolean hasElytra(Player player) {
         return player.getInventory().getChestplate().getType().equals(Material.ELYTRA);
     }
-
 }
