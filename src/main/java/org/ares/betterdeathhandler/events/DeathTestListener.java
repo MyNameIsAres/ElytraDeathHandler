@@ -18,31 +18,40 @@ public class DeathTestListener  implements Listener {
     public void onAnotherDeath(PlayerDeathEvent event) {
         final Player player = event.getEntity();
 
-        // TODO: Externalize validation of Elytra usage
+        // TODO: Externalize validation of Elytra usage CHECK
         // TODO: Better messages (config?)
-        // TODO: Code clean up.
+        // TODO: Code clean up. CHECK
 
-        if (player.getLastDamageCause().getCause().equals(EntityDamageEvent.DamageCause.FLY_INTO_WALL)) {
-           if (player.getInventory().getChestplate().getType().equals(Material.ELYTRA)) {
 
-               location.addLocation(player.getLocation());
+        if (validDeathCause(player)) {
+            if (hasElytra(player)) {
+                Common.log("Testing");
 
-               Common.log(location.getLocationList().toString()  + "I am the array.");
+                location.addLocation(player.getLocation());
 
-               SimpleComponent.of("&7Ouch! Hit the ground too hard? You died at\n"
-                       + player.getLocation().getX()
-                       + " " + player.getLocation().getY()
-                       + " " + player.getLocation().getZ())
-                       .onHover("Click to teleport to death location")
-                       .onClickRunCmd("/tpadeath")
-                       .send(player);
-           } else {
-               Common.log("Why it no worky");
-           }
+                SimpleComponent.of("&cOuch! Hit the ground too hard? Click me to return to your death location")
+                        .onHover("Click to teleport to death location")
+                        .onClickRunCmd("/tpadeath")
+                        .send(player);
+
+            } else {
+                Common.log("Why it no worky");
+            }
         } else {
             Common.log(String.valueOf(player.getLastDamageCause().getCause()));
         }
 
+    }
+
+    public boolean validDeathCause(Player player) {
+        EntityDamageEvent.DamageCause damageCause = player.getLastDamageCause().getCause();
+
+        return damageCause.equals(EntityDamageEvent.DamageCause.FLY_INTO_WALL)
+                || damageCause.equals(EntityDamageEvent.DamageCause.FALL);
+    }
+
+    public boolean hasElytra(Player player) {
+        return player.getInventory().getChestplate().getType().equals(Material.ELYTRA);
     }
 
 }

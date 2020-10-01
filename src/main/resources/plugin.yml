@@ -3,3 +3,7 @@ version: ${project.version}
 main: ${main.class}
 api-version: 1.15
 author: Ares
+
+permissions:
+  teleport.on.death:
+    default: op
