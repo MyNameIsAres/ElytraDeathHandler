@@ -14,9 +14,18 @@ public class Settings extends SimpleSettings {
      * version of the config by one (manually)
      */
 
+
+
     @Override
     protected int getConfigVersion() {
         return 1;
+    }
+
+    @Override
+    protected String[] getHeader() {
+        return new String[] {
+                "Config file BetterDeathHandler"
+        };
     }
 
     @Override
