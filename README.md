@@ -10,5 +10,7 @@ BetterDeathHandler changes this inconvinience for the player, by verifying wheth
 Plugin is to be published on Spigot soon. 
 Installation instructions will follow.
 
+## Example video:
+https://www.youtube.com/watch?v=Nxymslg2HJU
 
 
