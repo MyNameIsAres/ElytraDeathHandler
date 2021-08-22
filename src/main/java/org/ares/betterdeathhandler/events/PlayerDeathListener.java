@@ -1,6 +1,7 @@
 package org.ares.betterdeathhandler.events;
 
-import org.ares.betterdeathhandler.utility.DeathLocation;
+import org.ares.betterdeathhandler.MainPlugin;
+import org.ares.betterdeathhandler.storage.DeathLocation;
 import org.ares.betterdeathhandler.utility.Settings;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -8,10 +9,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.permissions.PermissionAttachment;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.model.SimpleComponent;
 
-public class DeathTestListener  implements Listener {
+public class PlayerDeathListener implements Listener {
+
+    public DeathLocation deathLocation;
+
+    public PlayerDeathListener(DeathLocation deathLocation) {
+        this.deathLocation = deathLocation;
+    }
 
     /**
      * This listener listens for a player death event.
@@ -25,7 +33,6 @@ public class DeathTestListener  implements Listener {
      * This may be resolved in another version.
      */
 
-    DeathLocation location = DeathLocation.getInstance();
 
     @EventHandler
     public void onAnotherDeath(PlayerDeathEvent event) {
@@ -34,9 +41,15 @@ public class DeathTestListener  implements Listener {
         if (validDeathCause(player)) {
             if (hasElytra(player)) {
 
-                location.addLocation(player.getLocation());
+                deathLocation.setLocation(player.getLocation());
 
-                Common.log(location.getLocationList().toString());
+//                deathLocation.addLocation(player.getLocation());
+//
+//                Common.log(deathLocation.getLocationList().toString());
+
+
+
+
 
                 SimpleComponent.of(Settings.DEATH_MESSAGE)
                         .onHover("Click to teleport to death location")

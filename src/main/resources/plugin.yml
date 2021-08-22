@@ -4,6 +4,10 @@ main: ${main.class}
 api-version: 1.15
 author: Ares
 
-permissions:
-  teleport.on.death:
-    default: op
+commands:
+  test:
+    description: "Fancy plugin"
+    aliases: [test]
+#permissions:
+#  teleport.on.death:
+#    default: op

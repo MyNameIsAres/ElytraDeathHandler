@@ -1,6 +1,6 @@
 package org.ares.betterdeathhandler.events;
 
-import org.ares.betterdeathhandler.utility.DeathLocation;
+import org.ares.betterdeathhandler.storage.DeathLocation;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -8,6 +8,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 
 public class PlayerQuitListener implements Listener {
+
+    public DeathLocation deathLocation;
+
+    public PlayerQuitListener(DeathLocation deathLocation) {
+        this.deathLocation = deathLocation;
+    }
 
     /**
      * This listener exists as a safety check.
@@ -19,11 +25,9 @@ public class PlayerQuitListener implements Listener {
 
     @EventHandler
     public void onAnotherDeath(PlayerQuitEvent event) {
-        DeathLocation locations = DeathLocation.getInstance();
-
-        if (!(locations.getLocationList().isEmpty())) {
-            Location location = locations.getLocationList().get(0);
-            locations.removeLocation(location);
+        if (!(deathLocation.getLocationList().isEmpty())) {
+            Location location = deathLocation.getLocationList().get(0);
+            deathLocation.removeLocation(location);
         }
     }
 }

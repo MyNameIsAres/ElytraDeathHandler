@@ -1,8 +1,11 @@
 package org.ares.betterdeathhandler;
 
+import lombok.Getter;
 import org.ares.betterdeathhandler.commands.TeleportCommand;
-import org.ares.betterdeathhandler.events.DeathTestListener;
+import org.ares.betterdeathhandler.events.PlayerDeathListener;
 import org.ares.betterdeathhandler.events.PlayerQuitListener;
+import org.ares.betterdeathhandler.permissions.PermissionManager;
+import org.ares.betterdeathhandler.storage.DeathLocation;
 import org.ares.betterdeathhandler.utility.Settings;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.plugin.SimplePlugin;
@@ -13,14 +16,19 @@ import java.util.List;
 
 public class MainPlugin extends SimplePlugin {
 
+
+    @Getter
+    DeathLocation deathLocation = new DeathLocation();
+
+    PermissionManager permissionManager = new PermissionManager();
+
     @Override
     protected void onPluginStart() {
-
         Common.log("BetterElytraDeath has been enabled!");
 
-        registerCommand(new TeleportCommand());
-        registerEvents(new DeathTestListener());
-        registerEvents(new PlayerQuitListener());
+        registerCommand(new TeleportCommand(permissionManager, deathLocation));
+        registerEvents(new PlayerDeathListener(deathLocation));
+        registerEvents(new PlayerQuitListener(deathLocation));
 
     }
 
