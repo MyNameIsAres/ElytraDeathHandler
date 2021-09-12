@@ -1,10 +1,13 @@
 package org.ares.betterdeathhandler.events;
 
+import org.ares.betterdeathhandler.permissions.PermissionManager;
 import org.ares.betterdeathhandler.storage.DeathLocation;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.mineacademy.fo.PlayerUtil;
 
 
 public class PlayerQuitListener implements Listener {
@@ -24,10 +27,12 @@ public class PlayerQuitListener implements Listener {
      */
 
     @EventHandler
-    public void onAnotherDeath(PlayerQuitEvent event) {
-        if (!(deathLocation.getLocationList().isEmpty())) {
-            Location location = deathLocation.getLocationList().get(0);
-            deathLocation.removeLocation(location);
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        final Player player = event.getPlayer();
+
+        if (PlayerUtil.hasPerm(player, PermissionManager.TELEPORT_PERMISSION)) {
+            // TODO: Write to cache file and add uuid + location to list for T time period.
         }
+
     }
 }

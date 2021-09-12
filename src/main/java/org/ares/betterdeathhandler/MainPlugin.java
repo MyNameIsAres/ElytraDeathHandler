@@ -27,7 +27,7 @@ public class MainPlugin extends SimplePlugin {
         Common.log("BetterElytraDeath has been enabled!");
 
         registerCommand(new TeleportCommand(permissionManager, deathLocation));
-        registerEvents(new PlayerDeathListener(deathLocation));
+        registerEvents(new PlayerDeathListener(deathLocation, permissionManager));
         registerEvents(new PlayerQuitListener(deathLocation));
 
     }
