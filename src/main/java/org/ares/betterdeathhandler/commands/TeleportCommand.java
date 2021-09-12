@@ -6,6 +6,7 @@ import org.ares.betterdeathhandler.utility.Settings;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
+import org.mineacademy.fo.PlayerUtil;
 import org.mineacademy.fo.command.SimpleCommand;
 
 /**
@@ -19,8 +20,8 @@ import org.mineacademy.fo.command.SimpleCommand;
 
 public class TeleportCommand extends SimpleCommand {
 
-    PermissionManager permissionManager;
-    DeathLocation deathLocation;
+    private final PermissionManager permissionManager;
+    private final DeathLocation deathLocation;
 
     public TeleportCommand(PermissionManager permissionManager, DeathLocation deathLocation) {
         super("tpadeath");
@@ -29,7 +30,6 @@ public class TeleportCommand extends SimpleCommand {
         this.deathLocation = deathLocation;
     }
 
-    boolean hasClicked = false;
 
     @Override
     protected void onCommand() {
@@ -38,17 +38,13 @@ public class TeleportCommand extends SimpleCommand {
         final Location location = deathLocation.getLocation();
         final Player player = getPlayer();
 
-
-        if (player.hasPermission(PermissionManager.TELEPORT_PERMISSION)) {
-
+        if (PlayerUtil.hasPerm(player, PermissionManager.TELEPORT_PERMISSION)) {
             player.teleport(location);
             Common.tell(player, Settings.TELEPORT_SUCCESS_MESSAGE);
 
             permissionManager.removePermission(getPlayer());
-            hasClicked = true;
         } else {
             Common.tell(player, Settings.TELEPORT_DENY_MESSAGE);
-            hasClicked = false;
         }
     }
 }
